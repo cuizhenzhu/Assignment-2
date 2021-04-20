@@ -1,0 +1,70 @@
+Question 1
+
+(d)
+
+SELECT metabolism FROM annotation GROUP BY metabolism HAVING count(*) > 1;
+
+select *
+from annotation a
+join (select metabolism from annotation group by metabolism having count(*) >1) b 
+on a.metabolism=b.metabolism;
+
+
+Question 2
+
+(a)
+
+SELECT m.LastName, m.FirstName, m.MemberID 
+FROM Member m 
+WHERE Coach is NuLL;
+
+
+(b)
+
+SELECT m.LastName, m.FirstName, m.MemberID 
+FROM Member m 
+WHERE year (JoinDate) = 2013;
+
+
+(c)
+   
+SELECT t1.MemberID, t2.LastName, t2.FirstName
+FROM (
+ SELECT DISTINCT MemberID
+ FROM Entry
+ WHERE year IN ('2014', '2015')
+) t1
+ LEFT JOIN (
+  SELECT MemberID, LastName, FirstName
+  FROM Member
+ ) t2
+ ON t1.MemberID = t2.MemberID;
+
+
+(d)
+
+SELECT t2.MemberID, t3.LastName, t3.FirstName 
+FROM(
+SELECT DISTINCT MemberID
+		FROM Entry
+		WHERE year = '2013'	
+                 )t0
+                left join (
+	SELECT DISTINCT MemberID
+	FROM Entry
+	WHERE year = '2014'
+                 ) t1 ON t0.MemberID = t1.MemberID
+	LEFT JOIN (
+		SELECT DISTINCT MemberID
+		FROM Entry
+		WHERE year = '2015'
+	) t2
+	ON t1.MemberID = t2.MemberID
+	LEFT JOIN (
+		SELECT MemberID, LastName, FirstName
+		FROM Member
+	) t3
+	ON t2.MemberID = t3.MemberID
+                WHERE t2.MemberID is not null;
+
+
